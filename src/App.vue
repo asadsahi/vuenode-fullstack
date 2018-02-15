@@ -16,7 +16,8 @@ export default {
     'app-footer': AppFooter
   }
 };
-</script><style>
+</script>
+<style lang="scss">
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -136,4 +137,5 @@ a {
     display: none;
   }
 }
+@import "./styles/index";
 </style>

@@ -12,6 +12,9 @@ const ProfileUserInfoView = () => import('../views/profile/ProfileUserInfoView.v
 const ProfilePasswordView = () => import('../views/profile/ProfilePasswordView.vue');
 const CategoryView = () => import('../views/examples/CategoryView.vue');
 const NotFoundView = () => import('../views/NotFoundView.vue');
+// All examples
+const ExamplesView = () => import('../views/examples/ExamplesView.vue');
+const ResponsiveHtmlFormView = () => import('../views/examples/misc/ResponsiveHtmlFormView.vue');
 
 export function createRouter() {
   return new Router({
@@ -20,6 +23,13 @@ export function createRouter() {
     scrollBehavior: () => ({ y: 0 }),
     routes: [
       { path: '/', component: HomeView },
+      {
+        path: '/examples', 
+        component: ExamplesView, 
+        children: [
+          { path: 'responsiveforms', component: ResponsiveHtmlFormView }
+        ]
+      },
       { path: '/login', component: LoginView },
       { path: '/register', component: RegisterView },
       {
