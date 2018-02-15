@@ -1,0 +1,17 @@
+{
+  "development": {
+    "dialect": "sqlite",
+    "storage": "./vuenode-fullstack.sqlite",
+    "logging": false
+  },
+  "test": {
+    "logging": false,
+    "dialect": "sqlite",
+    "storage": ":memory:"
+  },
+  "production": {
+    "dialect": "sqlite",
+    "storage": "./vuenode-fullstack.sqlite",
+    "logging": false
+  }
+}
