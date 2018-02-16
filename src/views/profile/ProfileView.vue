@@ -1,12 +1,10 @@
 <template>
   <div class="row">
-      <div class="col-md-1">
-          <div class="list-group flex-column small">
-              <router-link to="/profile/userinfo" class="list-group-item">User info</router-link>
-              <router-link to="/profile/userpassword" class="list-group-item">User password</router-link>
-          </div>
+      <div class="view-sub-menu">
+          <router-link to="/profile/userinfo" class="list-group-item">User info</router-link>
+          <router-link to="/profile/userpassword" class="list-group-item">User password</router-link>
       </div>
-      <div class="col-md-11">
+      <div>
         <router-view></router-view>  
       </div>
   </div>
@@ -21,10 +19,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.small {
-  font-size: 0.8rem;
-  a {
-    padding: 0;
-  }
+@import "../../styles/variables";
+
+.view-sub-menu a {
+  color:$primary;
 }
 </style>

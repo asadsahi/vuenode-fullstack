@@ -1,9 +1,11 @@
+@import "./variables";
+
 form header {
   margin: 0 0 20px 0;
 }
 form header div {
   font-size: 90%;
-  color: #999;
+  color: $primary;
 }
 form header h2 {
   margin: 0 0 5px 0;
@@ -59,7 +61,7 @@ input[type='url']:focus,
 input[type='password']:focus,
 textarea:focus {
   outline: 0;
-  border-color: #4697e4;
+  border-color: $primary;
 }
 
 @media (max-width: 600px) {
