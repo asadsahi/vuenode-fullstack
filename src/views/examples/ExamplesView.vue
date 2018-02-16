@@ -7,6 +7,9 @@
         <li>
             <router-link to="/examples/category/mobile">Mobile</router-link>
         </li>
+        <li>
+            <router-link to="/examples/modal">Modal</router-link>
+        </li>
     </ul>
     <!-- Header -->
     <transition name="fade" mode="out-in">

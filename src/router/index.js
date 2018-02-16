@@ -11,10 +11,11 @@ const RegisterView = () => import('../views/RegisterView.vue');
 const ProfileView = () => import('../views/profile/ProfileView.vue');
 const ProfileUserInfoView = () => import('../views/profile/ProfileUserInfoView.vue');
 const ProfilePasswordView = () => import('../views/profile/ProfilePasswordView.vue');
-const CategoryView = () => import('../views/examples/prefetch/CategoryView.vue');
 const NotFoundView = () => import('../views/NotFoundView.vue');
 // All examples
 const ExamplesView = () => import('../views/examples/ExamplesView.vue');
+const CategoryView = () => import('../views/examples/prefetch/CategoryView.vue');
+const ModalView = () => import('../views/examples/modal/ModalView.vue');
 
 export function createRouter() {
   return new Router({
@@ -30,6 +31,7 @@ export function createRouter() {
         component: ExamplesView,
         children: [
           { path: 'category/:id', name: 'category', component: CategoryView },
+          { path: 'modal', name: 'modal', component: ModalView },
         ]
       },
       { path: '/login', component: LoginView },
