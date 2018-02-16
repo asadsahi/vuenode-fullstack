@@ -1,11 +1,15 @@
 <template>
-  <div class="jumbotron text-center">
+<div class="row">
+  <div class="column column-50 column-offset-25">
     <h1>Vue Node fullstack</h1> A Single Page Application built using Vue and
     Nodejs
-    <p>
-      <a to="about" class="btn btn-info">More info</a>
-    </p>
+    <br>
+    <br>
+    <div>
+      <router-link to="about" class="button float-right">More info</router-link>
+    </div>
   </div>
+</div>
 </template>
 
 <script>

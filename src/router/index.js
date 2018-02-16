@@ -5,6 +5,7 @@ Vue.use(Router);
 
 // route-level code splitting
 const HomeView = () => import('../views/HomeView.vue');
+const AboutView = () => import('../views/AboutView.vue');
 const LoginView = () => import('../views/LoginView.vue');
 const RegisterView = () => import('../views/RegisterView.vue');
 const ProfileView = () => import('../views/profile/ProfileView.vue');
@@ -14,20 +15,20 @@ const CategoryView = () => import('../views/examples/prefetch/CategoryView.vue')
 const NotFoundView = () => import('../views/NotFoundView.vue');
 // All examples
 const ExamplesView = () => import('../views/examples/ExamplesView.vue');
-const ResponsiveHtmlFormView = () => import('../views/examples/misc/ResponsiveHtmlFormView.vue');
 
 export function createRouter() {
   return new Router({
     mode: 'history',
+    linkActiveClass: 'active',
     fallback: false,
     scrollBehavior: () => ({ y: 0 }),
     routes: [
       { path: '/', component: HomeView },
+      { path: '/about', component: AboutView },
       {
         path: '/examples',
         component: ExamplesView,
         children: [
-          { path: 'responsiveforms', component: ResponsiveHtmlFormView },
           { path: 'category/:id', name: 'category', component: CategoryView },
         ]
       },

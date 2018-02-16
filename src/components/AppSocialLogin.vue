@@ -1,7 +1,21 @@
 <template>
-  <footer class="footer">
-    <span>
-        Fullstack Vue & NodeJs application.
-    </span>
-  </footer>
+<div>
+  <button v-for="provider in providers" @click="login(provider)">
+    {{provider}}
+  </button>
+</div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      providers: ['google']
+    }
+  },
+  methods: {
+    login(provider) {
+      window.location.href = `api/auth/${provider}`;
+    }
+  }
+};
+</script>
