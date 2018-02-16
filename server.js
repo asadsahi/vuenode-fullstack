@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const ngrok = require('ngrok');
 const LRU = require('lru-cache');
 const _ = require('lodash');
 const http = require('http');
@@ -14,6 +15,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const microcache = require('route-cache');
 const resolve = file => path.resolve(__dirname, file);
+const logger = require('./src/api/features/logger');
 const { createBundleRenderer } = require('vue-server-renderer');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
@@ -112,33 +114,53 @@ function render(req, res) {
       res.status(404).send('404 | Page Not Found')
     } else {
       // Render Error Page or Redirect
-      res.status(500).send('500 | Internal Server Error')
-      console.error(`error during render : ${req.url}`)
-      console.error(err.stack)
+      res.status(500).send('500 | Internal Server Error');
+      console.error(`error during render : ${req.url}`);
+      console.error(err.stack);
     }
   }
 
   const context = {
     title: 'Vue Node Fullstack', // default title
     url: req.url
-  }
+  };
   renderer.renderToString(context, (err, html) => {
     if (err) {
-      return handleError(err)
+      return handleError(err);
     }
     res.send(html)
     if (!isProd) {
       console.log(`whole request: ${Date.now() - s}ms`)
     }
-  })
+  });
 }
 
 app.get('*', isProd ? render : (req, res) => {
   readyPromise.then(() => render(req, res))
-})
+});
 
-const port = process.env.PORT || 8080
-server.listen(port, () => {
-  console.log(`Environment: ${process.env.NODE_ENV}`)
-  console.log(`Listening at: http://localhost:${port}`)
-})
+const port = process.env.PORT || 8080;
+// get the intended host and port number, use localhost and port 3000 if not provided
+const customHost = process.env.HOST;
+const host = customHost || null; // Let http.Server use its default IPv6/4 host
+const prettyHost = customHost || 'localhost';
+
+// Start your app.
+server.listen(port, host, (err) => {
+  if (err) {
+    return logger.error(err.message);
+  }
+
+  // Connect to ngrok in dev mode
+  if (ngrok) {
+    ngrok.connect(port, (innerErr, url) => {
+      if (innerErr) {
+        return logger.error(innerErr);
+      }
+      return logger.appStarted(port, prettyHost, url);
+    });
+  } else {
+    return logger.appStarted(port, prettyHost);
+  }
+  return logger.appStarted(port, prettyHost);
+});

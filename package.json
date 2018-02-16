@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server",
     "dev": "rimraf ./dist && cross-env NODE_ENV=development nodemon",
+    "dev:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true nodemon",
     "prod": "cross-env NODE_ENV=production npm run start",
     "build": "rimraf dist && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
@@ -74,6 +75,7 @@
     "friendly-errors-webpack-plugin": "1.6.1",
     "image-webpack-loader": "4.1.0",
     "ip": "1.1.5",
+    "ngrok": "2.2.26",
     "node-sass": "4.7.2",
     "nodemon": "1.14.12",
     "rimraf": "2.6.2",
