@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const ngrok = require('ngrok');
 const LRU = require('lru-cache');
 const _ = require('lodash');
 const http = require('http');
@@ -15,10 +14,11 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const microcache = require('route-cache');
 const resolve = file => path.resolve(__dirname, file);
-const logger = require('./src/api/features/logger');
 const { createBundleRenderer } = require('vue-server-renderer');
+const logger = require('./src/api/features/logger');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
+const ngrok = process.env.ENABLE_TUNNEL ? require('ngrok') : false;
 const useMicroCache = process.env.MICRO_CACHE !== 'false';
 const serverInfo =
   `express/${require('express/package.json').version} ` +

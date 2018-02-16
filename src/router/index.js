@@ -10,7 +10,7 @@ const RegisterView = () => import('../views/RegisterView.vue');
 const ProfileView = () => import('../views/profile/ProfileView.vue');
 const ProfileUserInfoView = () => import('../views/profile/ProfileUserInfoView.vue');
 const ProfilePasswordView = () => import('../views/profile/ProfilePasswordView.vue');
-const CategoryView = () => import('../views/examples/CategoryView.vue');
+const CategoryView = () => import('../views/examples/prefetch/CategoryView.vue');
 const NotFoundView = () => import('../views/NotFoundView.vue');
 // All examples
 const ExamplesView = () => import('../views/examples/ExamplesView.vue');
@@ -24,10 +24,11 @@ export function createRouter() {
     routes: [
       { path: '/', component: HomeView },
       {
-        path: '/examples', 
-        component: ExamplesView, 
+        path: '/examples',
+        component: ExamplesView,
         children: [
-          { path: 'responsiveforms', component: ResponsiveHtmlFormView }
+          { path: 'responsiveforms', component: ResponsiveHtmlFormView },
+          { path: 'category/:id', name: 'category', component: CategoryView },
         ]
       },
       { path: '/login', component: LoginView },
@@ -40,7 +41,6 @@ export function createRouter() {
           { path: 'userpassword', component: ProfilePasswordView }
         ]
       },
-      { path: '/category/:id', name: 'category', component: CategoryView },
       { path: '*', component: NotFoundView }
     ]
   })

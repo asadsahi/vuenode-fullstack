@@ -6,8 +6,6 @@
         </router-link>
         <router-link exact to="/">Home</router-link>
         <router-link exact to="/examples">Examples</router-link>
-        <router-link :to="{ name: 'category', params: { id: 'front-end' } }">Front-end</router-link>
-        <router-link :to="{ name: 'category', params: { id: 'mobile' } }">Mobile</router-link>
         <router-link v-if="isAuthenticated" to="/profile">{{user.username}}</router-link>
         <a v-if="isAuthenticated" v-on:click="logout()">Logout</a>
         <router-link v-if="!isAuthenticated" to="/register">Register</router-link>
