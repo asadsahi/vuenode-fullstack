@@ -57,6 +57,7 @@
     "socket.io": "2.0.4",
     "socket.io-client": "2.0.4",
     "sqlite3": "3.1.13",
+    "vee-validate": "2.0.4",
     "vue": "2.5.13",
     "vue-router": "3.0.1",
     "vue-server-renderer": "2.5.13",

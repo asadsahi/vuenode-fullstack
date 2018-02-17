@@ -8,9 +8,11 @@
     <form v-on:submit="login" novalidate>
       <fieldset>
         <label for="usernameoremail">Username or Email</label>
-        <input type="email" id="usernameoremail" v-model="usernameOrEmail">
+        <input type="email" id="usernameoremail" name="usernameoremail" v-model="usernameOrEmail" v-validate="'required'">
+        <div v-show="errors.has('usernameoremail')">{{ errors.first('usernameoremail') }}</div>
         <label for="password">Password</label>
-        <input type="password" id="password" v-model="password">
+        <input type="password" id="password" name="password" v-model="password" v-validate="'required'">
+        <div v-show="errors.has('password')">{{ errors.first('password') }}</div>
         <button>
           Login
         </button>
@@ -42,9 +44,14 @@ export default {
     }),
     login(event) {
       event.preventDefault();
-      this.$store.dispatch('login', {
-        usernameOrEmail: this.usernameOrEmail,
-        password: this.password
+      this.$validator.validateAll().then(result => {
+        console.log(result);
+        if (result) {
+          this.$store.dispatch('login', {
+            usernameOrEmail: this.usernameOrEmail,
+            password: this.password
+          });
+        }
       });
     }
   }
