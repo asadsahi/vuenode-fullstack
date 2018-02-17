@@ -6,7 +6,7 @@
     <br>
     <br>
     <div>
-      <router-link to="about" class="button float-right">More info</router-link>
+      <router-link to="about" class="button button-outline float-right">More info</router-link>
     </div>
   </div>
 </div>

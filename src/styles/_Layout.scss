@@ -1,23 +1,22 @@
-@import "./variables";
+@import "Color";
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-size: 15px;
-    background-color: $background;
+    background-color: $color-tertiary;
     margin: 0;
     padding-top: 55px;
-    color: $font-color;
     overflow-y: scroll;
   }
   
   a {
-    color: $font-color;
+    color: $color-font;
     text-decoration: none;
   }
   
   .header {
-    background-color: $primary;
+    background-color: $color-primary;
     position: fixed;
     z-index: 999;
     height: 55px;
@@ -45,11 +44,11 @@ body {
   }
   
   .header a:hover {
-    color: $white;
+    color: $color-initial;
   }
   
   .header a.router-link-active {
-    color: $white;
+    color: $color-initial;
     font-weight: 400;
   }
   
@@ -58,7 +57,7 @@ body {
   }
   
   .header .github {
-    color: $white;
+    color: $color-initial;
     font-size: 0.9em;
     margin: 0;
     float: right;
@@ -85,6 +84,7 @@ body {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    height: 55px;
     height: 55px;
     line-height: 55px;
     text-align: center;

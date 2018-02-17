@@ -1,5 +1,5 @@
 <template>
-  <div class="card-deck">
+  <div>
     <div class="card"
     v-for="post in posts"
     v-bind:key="post.id">

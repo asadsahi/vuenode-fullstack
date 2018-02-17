@@ -33,6 +33,7 @@
 export default {};
 </script>
 <style lang="scss">
+@import '../../../styles/Color';
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -63,7 +64,7 @@ export default {};
 
 .modal-header h3 {
   margin-top: 0;
-  color: #42b983;
+  color: $color-primary;
 }
 
 .modal-body {

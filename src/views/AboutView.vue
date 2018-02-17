@@ -1,3 +1,15 @@
 <template>
+<div>
   <h1>About</h1>
+  <ul>
+    <li>Node</li>
+    <li>VueJs</li>
+    <li>Sequelize</li>
+    <li>SSR</li>
+    <li>Login</li>
+    <li>Registration</li>
+    <li>JWT</li>
+    <li>PWA</li>
+  </ul>
+</div>
 </template>

@@ -20,10 +20,12 @@ select {
 	height: 3.8rem;
 	padding: .6rem 1.0rem; // The .6rem vertically centers text on FF, ignored by Webkit
 	width: 100%;
-
 	&:focus {
 		border-color: $color-primary;
 		outline: 0;
+	}
+	&invalid {
+		border-color: $color-error;
 	}
 }
 
