@@ -14,8 +14,6 @@ const ProfilePasswordView = () => import('../views/profile/ProfilePasswordView.v
 const NotFoundView = () => import('../views/NotFoundView.vue');
 // All examples
 const ExamplesView = () => import('../views/examples/ExamplesView.vue');
-const CategoryView = () => import('../views/examples/prefetch/CategoryView.vue');
-const ModalView = () => import('../views/examples/modal/ModalView.vue');
 
 export function createRouter() {
   return new Router({
@@ -28,11 +26,7 @@ export function createRouter() {
       { path: '/about', component: AboutView },
       {
         path: '/examples',
-        component: ExamplesView,
-        children: [
-          { path: 'category/:id', name: 'category', component: CategoryView },
-          { path: 'modal', name: 'modal', component: ModalView },
-        ]
+        component: ExamplesView
       },
       { path: '/login', component: LoginView },
       { path: '/register', component: RegisterView },

@@ -17,3 +17,20 @@
     </transition>
 </div>
 </template>
+<script>
+const CategoryView = () =>
+  import('./prefetch/CategoryView.vue');
+const ModalView = () => import('./modal/ModalView.vue');
+export default {
+  created() {
+    let { routes } = this.$router.options;
+    let routeData = routes.find(r => r.path === this.$route.path);
+    routeData.children = [
+      { path: 'category/:id', name: 'category', component: CategoryView },
+      { path: 'modal', name: 'modal', component: ModalView }
+    ];
+    this.$router.addRoutes([routeData]);
+  }
+};
+</script>
+
