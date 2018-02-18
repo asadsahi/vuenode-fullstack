@@ -121,7 +121,7 @@ function render(req, res) {
   }
 
   const context = {
-    title: 'Vue Node Fullstack', // default title
+    title: 'Vue and Node Fullstack Application', // default title
     url: req.url
   };
   renderer.renderToString(context, (err, html) => {
