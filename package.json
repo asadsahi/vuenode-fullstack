@@ -14,7 +14,7 @@
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules",
     "test": "karma start test/unit/karma.config.js",
     "postinstall": "npm run build && npm run db",
-    "db": "sequelize db:migrate & sequelize db:seed:all"
+    "db": "sequelize db:migrate && sequelize db:seed:all"
   },
   "engines": {
     "node": ">=8.0",
