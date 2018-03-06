@@ -1,13 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const vueConfig = require('./vue-loader.config');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractSCSS = new ExtractTextPlugin({
+  filename: "common.[chunkhash].css",
+  allChunks: true
+});
 const isProd = process.env.NODE_ENV === 'production';
 
-const config = {
+module.exports = {
   devtool: isProd
     ? false
     : '#cheap-module-source-map',
@@ -45,8 +47,8 @@ const config = {
       {
         test: /\.css$/,
         use: isProd
-          ? ExtractTextPlugin.extract({
-            use: 'css-loader?minimize',
+          ? extractSCSS.extract({
+            use: ['css-loader?minimize'],
             fallback: 'vue-style-loader'
           })
           : ['vue-style-loader', 'css-loader']
@@ -54,8 +56,8 @@ const config = {
       {
         test: /\.scss$/,
         use: isProd
-          ? ExtractTextPlugin.extract({
-            use: 'css-loader?minimize',
+          ? extractSCSS.extract({
+            use: ['css-loader?minimize', 'sass-loader'],
             fallback: 'vue-style-loader'
           })
           : ['vue-style-loader', 'css-loader', 'sass-loader']
@@ -66,34 +68,13 @@ const config = {
     maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false
   },
-  mode: process.env.NODE_ENV || 'production',
+  mode: process.env.NODE_ENV,
   plugins: isProd
     ? [
       new webpack.optimize.ModuleConcatenationPlugin(),
-      new ExtractTextPlugin({
-        filename: 'common.[chunkhash].css',
-        allChunks: true
-      })
+      extractSCSS
     ]
     : [
       new FriendlyErrorsPlugin()
     ]
 }
-
-if (isProd) {
-  config.optimization = {
-    ...config.optimization,
-    minimizer: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            inline: false,
-          },
-        },
-      }),
-    ],
-  };
-}
-
-module.exports = config;

@@ -10,7 +10,6 @@ const config = merge(base, {
   },
   resolve: {
     alias: {
-      'create-api': './create-api-client.js'
     }
   },
   plugins: [
@@ -36,8 +35,9 @@ const config = merge(base, {
           return (
             // it's inside node_modules
             /node_modules/.test(module.context) &&
-            // and not a CSS file (due to extract-text-webpack-plugin limitation)
-            !/\.css$/.test(module.request)
+            // and not a CSS/SCSS file (due to extract-text-webpack-plugin limitation)
+            !/\.css$/.test(module.request) &&
+            !/\.scss$/.test(module.request)
           )
         }
       }

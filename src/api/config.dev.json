@@ -3,7 +3,7 @@
   "ssrEnabled": true,
   "database": {
     "dialect": "sqlite",
-    "storage": "./vuenode-fullstack.sqlite"
+    "storage": "./db.sqlite"
   },
   "Security": {
     "JWT_SECRET": "SECRET",
