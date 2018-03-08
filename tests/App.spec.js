@@ -9,7 +9,8 @@ describe('App.vue', () => {
     it('renders correctly', () => {
         Vue.use(vueRouter)
         const wrapper = shallow(App);
-        expect(wrapper).toBeDefined();
+        expect(wrapper.vm).toBeDefined();
+        expect(wrapper.element).toBeDefined();
     });
 
 });
