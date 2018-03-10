@@ -47,7 +47,7 @@ npm install # or yarn
 npm run dev # or yarn dev
 
 # build for production
-npm run build # or yarn build
+npm run build:prod # or yarn build:prod
 
 # serve in production mode
 npm start # or yarn start
