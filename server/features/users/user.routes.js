@@ -3,7 +3,7 @@ const multer = require('multer');
 const multerConfig = {
   // dest: './profile/images/',
   limits: {
-    fileSize: 1 * 1024 * 1024, // Max file size in bytes (1 MB)
+    fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
   },
   fileFilter: (req, file, callback) => {
     if (
@@ -17,10 +17,10 @@ const multerConfig = {
       return callback(err, false);
     }
     return callback(null, true);
-  },
+  }
 };
 
-module.exports = (app) => {
+module.exports = app => {
   /* eslint global-require: "off" */
   // User Routes
   const users = require('./user.controller');
@@ -37,33 +37,41 @@ module.exports = (app) => {
   app.route('/api/auth/signout').get(users.signout);
 
   // Setting the facebook oauth routes
-  app.route('/api/auth/facebook').get(users.oauthCall('facebook', {
-    session: false,
-    scope: ['email'],
-  }));
+  app.route('/api/auth/facebook').get(
+    users.oauthCall('facebook', {
+      session: false,
+      scope: ['email']
+    })
+  );
   app.route('/api/auth/facebook/callback').get(users.oauthCallback('facebook'));
 
   // Setting the windowslive oauth routes
-  app.route('/api/auth/windowslive').get(users.oauthCall('windowslive', {
-    session: false,
-    scope: ['wl.signin', 'wl.basic'],
-  }));
+  app.route('/api/auth/windowslive').get(
+    users.oauthCall('windowslive', {
+      session: false,
+      scope: ['wl.signin', 'wl.basic']
+    })
+  );
   app
     .route('/api/auth/windowslive/callback')
     .get(users.oauthCallback('windowslive'));
 
   // Setting the google oauth routes
-  app.route('/api/auth/google').get(users.oauthCall('google', {
-    session: false,
-    scope: ['openid', 'profile', 'email'],
-  }));
+  app.route('/api/auth/google').get(
+    users.oauthCall('google', {
+      session: false,
+      scope: ['openid', 'profile', 'email']
+    })
+  );
   app.route('/api/auth/google/callback').get(users.oauthCallback('google'));
 
   // Setting the linkedin oauth routes
-  app.route('/api/auth/linkedin').get(users.oauthCall('linkedin', {
-    session: false,
-    scope: ['r_basicprofile', 'r_emailaddress'],
-  }));
+  app.route('/api/auth/linkedin').get(
+    users.oauthCall('linkedin', {
+      session: false,
+      scope: ['r_basicprofile', 'r_emailaddress']
+    })
+  );
   app.route('/api/auth/linkedin/callback').get(users.oauthCallback('linkedin'));
 
   // Setting the github oauth routes

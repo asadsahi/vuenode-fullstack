@@ -6,17 +6,16 @@ const errorHandler = require('../core/errorHandler');
  * List of Users
  */
 exports.list = (req, res) => {
-  User
-    .findAll({
-      attributes: ['firstName', 'lastName', 'username', 'email', 'updatedAt'],
-      include: [
-        { model: Role, attributes: ['id', 'name'] },
-        { model: UserImage, attributes: ['id'] },
-      ],
-      order: ['updatedAt'],
-    })
-    .then((users) => res.json(users))
-    .catch((err) => res.status(400).send(errorHandler.formatMessage(err)));
+  User.findAll({
+    attributes: ['firstName', 'lastName', 'username', 'email', 'updatedAt'],
+    include: [
+      { model: Role, attributes: ['id', 'name'] },
+      { model: UserImage, attributes: ['id'] }
+    ],
+    order: ['updatedAt']
+  })
+    .then(users => res.json(users))
+    .catch(err => res.status(400).send(errorHandler.formatMessage(err)));
 };
 
 /**
@@ -34,19 +33,23 @@ exports.update = (req, res) => {
 
   // For security purposes only merge these parameters
 
-  user.update({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    roles: req.body.roles,
-    roleNames: req.body.roleNames,
-  }, {
-      /* eslint indent: "off" */
-      where: {
-        id: req.user.id,
+  user
+    .update(
+      {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        roles: req.body.roles,
+        roleNames: req.body.roleNames
       },
-    })
-    .then((u) => res.json(u))
-    .catch((err) => res.status(400).send(errorHandler.formatMessage(err)));
+      {
+        /* eslint indent: "off" */
+        where: {
+          id: req.user.id
+        }
+      }
+    )
+    .then(u => res.json(u))
+    .catch(err => res.status(400).send(errorHandler.formatMessage(err)));
 };
 
 /**
@@ -55,9 +58,10 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const user = req.model;
 
-  user.destroy()
-    .then((u) => res.json(u))
-    .catch((err) => res.status(400).send(errorHandler.formatMessage(err)));
+  user
+    .destroy()
+    .then(u => res.json(u))
+    .catch(err => res.status(400).send(errorHandler.formatMessage(err)));
 };
 
 /**

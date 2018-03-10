@@ -7,8 +7,8 @@ module.exports = function apiMiddlewares(app) {
 
 function apiRoutes(app) {
   /* eslint global-require: "off" */
-  globby([`${__dirname}/./features/*/**/*.policy.js`]).then((policies) => {
-    policies.forEach((policyPath) => {
+  globby([`${__dirname}/./features/*/**/*.policy.js`]).then(policies => {
+    policies.forEach(policyPath => {
       require(path.resolve(policyPath)).invokeRolesPolicies();
     });
   });
@@ -23,5 +23,4 @@ function apiRoutes(app) {
   require('./features/users')(app);
   // Content public routes
   require('./features/content/content.routes')(app);
-
 }

@@ -20,10 +20,10 @@ exports.signup = (req, res) => {
 
   const model = Object.assign(req.body, { provider: 'local' });
   User.create(model)
-    .then((user) => {
+    .then(user => {
       res.json(user);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(400).send(err);
     });
 };
@@ -66,11 +66,13 @@ exports.oauthCall = (strategy, scope) => (req, res, next) => {
 /**
  * OAuth callback
  */
-exports.oauthCallback = (strategy) => (req, res, next) => {
+exports.oauthCallback = strategy => (req, res, next) => {
   // info.redirect_to contains inteded redirect path
   passport.authenticate(strategy, { session: false }, (err, user) => {
     if (err) {
-      return res.redirect(`/login?err=${encodeURIComponent(errorHandler.formatMessage(err))}`);
+      return res.redirect(
+        `/login?err=${encodeURIComponent(errorHandler.formatMessage(err))}`
+      );
     }
     if (!user) {
       return res.redirect('/login');
@@ -88,10 +90,10 @@ exports.oauthCallback = (strategy) => (req, res, next) => {
 exports.saveOAuthUserProfile = (providerUserProfile, done) => {
   User.findOne({
     where: {
-      email: providerUserProfile.email,
-    },
+      email: providerUserProfile.email
+    }
   })
-    .then((user) => {
+    .then(user => {
       if (user && user.provider === 'local') {
         done('Another user with this email already exist');
       }
@@ -109,20 +111,20 @@ exports.saveOAuthUserProfile = (providerUserProfile, done) => {
         displayName: providerUserProfile.displayName,
         profileImageURL: getSocialLoginImageUrl(providerUserProfile),
         provider: providerUserProfile.provider,
-        providerData: providerUserProfile.providerData,
+        providerData: providerUserProfile.providerData
       })
-        .then((newUser) => {
+        .then(newUser => {
           done(null, newUser);
         })
 
         // Error creating user
-        .catch((err) => {
+        .catch(err => {
           logger.error(err);
           done(err);
         });
     })
     // Error finding User
-    .catch((err) => {
+    .catch(err => {
       logger.error(err);
       done(err);
     });
@@ -149,11 +151,11 @@ exports.removeOAuthProvider = (req, res) => {
     user.markModified('additionalProvidersData');
   }
 
-  user.save((err) => {
+  user.save(err => {
     if (err) {
       return res.status(400).send(errorHandler.formatMessage(err));
     }
-    req.login(user, (e) => {
+    req.login(user, e => {
       if (e) {
         return res.status(400).send(e);
       }
@@ -168,11 +170,12 @@ exports.updateProfile = (req, res) => {
   req.user
     .update({
       firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      lastName: req.body.lastName
     })
-    .then((user) =>
-      res.json(_.pick(user, global.appConfig.whitelistedUserFields)))
-    .catch((err) => res.status(400).send(errorHandler.formatMessage(err)));
+    .then(user =>
+      res.json(_.pick(user, global.appConfig.whitelistedUserFields))
+    )
+    .catch(err => res.status(400).send(errorHandler.formatMessage(err)));
 };
 
 /**
@@ -181,10 +184,10 @@ exports.updateProfile = (req, res) => {
 exports.getProfilePicture = (req, res) => {
   UserImage.findOne({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   }).then(
-    (userImage) => {
+    userImage => {
       if (userImage) {
         res.contentType(userImage.contentType);
         res.send(userImage.data);
@@ -192,7 +195,7 @@ exports.getProfilePicture = (req, res) => {
         res.status(404).send('Not found');
       }
     },
-    (err) => {
+    err => {
       res.status(400).send(errorHandler.formatMessage(err));
     }
   );
@@ -202,26 +205,27 @@ exports.getProfilePicture = (req, res) => {
  * Update profile picture
  */
 exports.changeProfilePicture = (req, res) => {
-  req.user.getUserImage().then((image) => {
+  req.user.getUserImage().then(image => {
     let promise;
     if (image) {
       promise = image.update({
         contentType: req.body.mimetype,
-        data: req.body.url,
+        data: req.body.url
       });
     } else {
       promise = req.user.createUserImage({
         contentType: req.body.mimetype,
-        data: req.body.url,
+        data: req.body.url
       });
     }
 
     promise
-      .then((img) => {
+      .then(img => {
         res.json(img);
       })
       .catch(() =>
-        res.status(400).send('Error while trying to update user picture'));
+        res.status(400).send('Error while trying to update user picture')
+      );
   });
 };
 
@@ -242,7 +246,7 @@ exports.getProfile = (req, res) => {
       email: req.user.email,
       lastName: req.user.lastName,
       firstName: req.user.firstName,
-      additionalProvidersData: req.user.additionalProvidersData,
+      additionalProvidersData: req.user.additionalProvidersData
     };
   } else {
     return res.status(401).send({});
@@ -274,14 +278,16 @@ exports.forgot = (req, res) => {
     }
     User.findOne({
       where: {
-        email: req.body.username.toLowerCase(),
-      },
+        email: req.body.username.toLowerCase()
+      }
     })
-      .then((user) => {
+      .then(user => {
         if (user.provider !== 'local') {
           return res
             .status(400)
-            .send(`It seems like you signed up using your ${user.provider} account`);
+            .send(
+              `It seems like you signed up using your ${user.provider} account`
+            );
         }
         /* eslint no-param-reassign: "off" */
         user.resetPasswordToken = token;
@@ -289,7 +295,7 @@ exports.forgot = (req, res) => {
 
         user
           .save()
-          .then((u) => {
+          .then(u => {
             const httpTransport = req.secure ? 'https://' : 'http://';
             const baseUrl =
               req.app.get('domain') || httpTransport + req.headers.host;
@@ -299,7 +305,7 @@ exports.forgot = (req, res) => {
               {
                 name: u.displayName,
                 appName: global.appConfig.appTitle,
-                url: `${baseUrl}/api/auth/reset/${token}`,
+                url: `${baseUrl}/api/auth/reset/${token}`
               },
               (e, emailHTML) => {
                 if (e) {
@@ -312,25 +318,27 @@ exports.forgot = (req, res) => {
                   to: u.email,
                   from: global.appConfig.mailOptions.from,
                   subject: 'Password Reset',
-                  html: emailHTML,
+                  html: emailHTML
                 };
-                smtpTransport.sendMail(mailOptions, (er) => {
+                smtpTransport.sendMail(mailOptions, er => {
                   if (er) {
                     return res.status(400).send('Failure sending email');
                   }
                   res.json({
                     message:
-                      'An email has been sent to the provided email relating to this username with further instructions.',
+                      'An email has been sent to the provided email relating to this username with further instructions.'
                   });
                 });
               }
             );
           })
           .catch(() =>
-            res.status(400).send('Unable to save email reset token for user'));
+            res.status(400).send('Unable to save email reset token for user')
+          );
       })
       .catch(() =>
-        res.status(400).send('No account with that username has been found'));
+        res.status(400).send('No account with that username has been found')
+      );
   });
 };
 
@@ -342,12 +350,13 @@ exports.validateResetToken = (req, res) => {
     where: {
       resetPasswordToken: req.params.token,
       resetPasswordExpires: {
-        $gt: Date.now(),
-      },
-    },
+        $gt: Date.now()
+      }
+    }
   })
     .then(() =>
-      res.redirect(`/login/resetpassword?resetToken=${req.params.token}`))
+      res.redirect(`/login/resetpassword?resetToken=${req.params.token}`)
+    )
     .catch(() => res.redirect('/login/resetpassword'));
 };
 
@@ -371,11 +380,11 @@ exports.reset = (req, res) => {
     where: {
       resetPasswordToken: req.params.token,
       resetPasswordExpires: {
-        $gt: Date.now(),
-      },
-    },
+        $gt: Date.now()
+      }
+    }
   })
-    .then((user) => {
+    .then(user => {
       if (passwordDetails.newPassword !== passwordDetails.verifyPassword) {
         return res.status(400).send('Passwords do not match');
       }
@@ -384,14 +393,14 @@ exports.reset = (req, res) => {
         .update({
           password: user.encryptPassword(passwordDetails.newPassword),
           resetPasswordToken: undefined,
-          resetPasswordExpires: undefined,
+          resetPasswordExpires: undefined
         })
-        .then((u) => {
+        .then(u => {
           res.render(
             'reset-password-confirm-email',
             {
               name: u.displayName,
-              appName: global.appConfig.appTitle,
+              appName: global.appConfig.appTitle
             },
             (err, emailHTML) => {
               if (err) {
@@ -404,7 +413,7 @@ exports.reset = (req, res) => {
                 to: u.email,
                 from: global.appConfig.mailOptions.from,
                 subject: 'Your password has been changed',
-                html: emailHTML,
+                html: emailHTML
               };
 
               smtpTransport.sendMail(mailOptions, () => {
@@ -417,10 +426,11 @@ exports.reset = (req, res) => {
             }
           );
         })
-        .catch((e) => res.status(400).send(errorHandler.formatMessage(e)));
+        .catch(e => res.status(400).send(errorHandler.formatMessage(e)));
     })
     .catch(() =>
-      res.status(400).send('Password reset token is invalid or has expired.'));
+      res.status(400).send('Password reset token is invalid or has expired.')
+    );
 };
 
 /**
@@ -434,28 +444,30 @@ exports.changePassword = (req, res) => {
     if (passwordDetails.newPassword) {
       User.findOne({
         where: {
-          id: req.user.id,
-        },
+          id: req.user.id
+        }
       })
-        .then((user) => {
+        .then(user => {
           if (user.validPassword(passwordDetails.currentPassword)) {
             if (
               passwordDetails.newPassword === passwordDetails.verifyPassword
             ) {
-              const newPassword = user.encryptPassword(passwordDetails.newPassword);
+              const newPassword = user.encryptPassword(
+                passwordDetails.newPassword
+              );
 
               user
                 .update(
                   {
-                    password: newPassword,
+                    password: newPassword
                   },
                   {
                     where: {
-                      id: user.id,
-                    },
+                      id: user.id
+                    }
                   }
                 )
-                .then((u) => {
+                .then(u => {
                   if (!u) {
                     return res
                       .status(400)
