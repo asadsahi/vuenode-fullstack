@@ -7,25 +7,25 @@ export const userService = {
   getAll,
   getById,
   update,
-  delete: del,
+  delete: del
 };
 
 function login(username, password) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password })
   };
 
   return fetch('/users/authenticate', requestOptions)
-    .then((response) => {
+    .then(response => {
       if (!response.ok) {
         return Promise.reject(response.statusText);
       }
 
       return response.json();
     })
-    .then((user) => {
+    .then(user => {
       // login successful if there's a jwt token in the response
       if (user && user.token) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -44,7 +44,7 @@ function logout() {
 function getAll() {
   const requestOptions = {
     method: 'GET',
-    headers: authHeader(),
+    headers: authHeader()
   };
 
   return fetch('/users', requestOptions).then(handleResponse);
@@ -53,7 +53,7 @@ function getAll() {
 function getById(id) {
   const requestOptions = {
     method: 'GET',
-    headers: authHeader(),
+    headers: authHeader()
   };
 
   return fetch(`/users/${id}`, requestOptions).then(handleResponse);
@@ -63,7 +63,7 @@ function register(user) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(user),
+    body: JSON.stringify(user)
   };
 
   return fetch('/users/register', requestOptions).then(handleResponse);
@@ -73,7 +73,7 @@ function update(user) {
   const requestOptions = {
     method: 'PUT',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
-    body: JSON.stringify(user),
+    body: JSON.stringify(user)
   };
 
   return fetch(`/users/${user.id}`, requestOptions).then(handleResponse);
@@ -83,7 +83,7 @@ function update(user) {
 function del(id) {
   const requestOptions = {
     method: 'DELETE',
-    headers: authHeader(),
+    headers: authHeader()
   };
 
   return fetch(`/users/${id}`, requestOptions).then(handleResponse);

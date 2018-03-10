@@ -1,23 +1,21 @@
-
-/* eslint-disable */
-
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   const Language = sequelize.define(
-    'Language', {
+    'Language',
+    {
       locale: {
         type: DataTypes.STRING,
-        allowNulls: false,
+        allowNulls: false
       },
-      description: DataTypes.STRING,
+      description: DataTypes.STRING
     },
     {
       timestamps: false,
       indexes: [
         {
           unique: true,
-          fields: ['locale'],
-        },
-      ],
+          fields: ['locale']
+        }
+      ]
     }
   );
 

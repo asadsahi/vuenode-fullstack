@@ -9,8 +9,10 @@ const AboutView = () => import('../views/AboutView.vue');
 const LoginView = () => import('../views/LoginView.vue');
 const RegisterView = () => import('../views/RegisterView.vue');
 const ProfileView = () => import('../views/profile/ProfileView.vue');
-const ProfileUserInfoView = () => import('../views/profile/ProfileUserInfoView.vue');
-const ProfilePasswordView = () => import('../views/profile/ProfilePasswordView.vue');
+const ProfileUserInfoView = () =>
+  import('../views/profile/ProfileUserInfoView.vue');
+const ProfilePasswordView = () =>
+  import('../views/profile/ProfilePasswordView.vue');
 const NotFoundView = () => import('../views/NotFoundView.vue');
 // All examples
 const ExamplesView = () => import('../views/examples/ExamplesView.vue');
@@ -40,5 +42,5 @@ export function createRouter() {
       },
       { path: '*', component: NotFoundView }
     ]
-  })
+  });
 }

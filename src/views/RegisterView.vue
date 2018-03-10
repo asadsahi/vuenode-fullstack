@@ -1,26 +1,45 @@
 <template>
   <div class="row">
     <div class="column">
-    <h2>Register</h2>
-    <div class="error" v-if="error">
-      {{error}}
-    </div>
-    <form v-on:submit="register" novaliate>
+      <h2>Register</h2>
+      <div 
+        v-if="error"
+        class="error" >
+        {{ error }}
+      </div>
+      <form 
+        novaliate
+        @submit="register">
         <label for="username">Username</label>
-        <input type="text" id="username"  v-model="username">
+        <input 
+          id="username" 
+          v-model="username"
+          type="text">
         <label for="email">Email</label>
-        <input type="email" id="email"  v-model="email">
+        <input 
+          id="email"
+          v-model="email"
+          type="email">
         <label for="password">Password</label>
-        <input type="password" id="password"  v-model="password">
+        <input 
+          id="password" 
+          v-model="password"
+          type="password">
         <label for="firstname">First name</label>
-        <input type="text" id="firstname"  v-model="firstName">
+        <input 
+          id="firstname" 
+          v-model="firstName"
+          type="text">
         <label for="lastname">Last name</label>
-        <input type="text" id="lastname"  v-model="lastName">
+        <input 
+          id="lastname" 
+          v-model="lastName"
+          type="text">
         <button class="btn btn-primary">
           Register
         </button>
-    </form>
-  </div>
+      </form>
+    </div>
   </div>
 </template>
 <script>

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="card"
-    v-for="post in posts"
-    v-bind:key="post.id">
-      <app-post-card :post="post">
-      </app-post-card>
+    <div 
+      v-for="post in posts"
+      :key="post.id"
+      class="card">
+      <app-post-card :post="post"/>
     </div>
   </div>
 </template>
@@ -28,11 +28,6 @@ export default {
   computed: {
     ...mapGetters('postsModule', ['posts'])
   },
-  methods: {
-    loadPosts() {
-      fetchInitialData(this.$store, this.$route);
-    }
-  },
   watch: {
     $route(to, from) {
       this.loadPosts();
@@ -40,6 +35,11 @@ export default {
   },
   created() {
     this.loadPosts();
+  },
+  methods: {
+    loadPosts() {
+      fetchInitialData(this.$store, this.$route);
+    }
   }
 };
 </script>

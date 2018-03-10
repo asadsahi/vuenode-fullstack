@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 const Model = require('../models').User;
 
 const bcrypt = require('bcrypt-nodejs');

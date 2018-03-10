@@ -1,6 +1,6 @@
 const passport = require('passport');
 
-module.exports = (app) => {
+module.exports = app => {
   // Add passport's middleware
   app.use(passport.initialize());
   app.use(passport.session());
@@ -16,7 +16,6 @@ module.exports = (app) => {
   //     require(path.resolve(strategy))();
   //   });
   // });
-
 
   // var context = require.context("./strategies", true, /\.js$/);
   // var obj = {};

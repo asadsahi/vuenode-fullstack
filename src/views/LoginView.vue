@@ -1,24 +1,38 @@
 <template>
   <div class="row">
     <div class="column">
-    <h2>Login</h2>
-    <div class="error" v-if="error">
-      {{error}}
-    </div>
-    <form v-on:submit="login" novalidate>
-      <fieldset>
-        <label for="usernameoremail">Username or Email</label>
-        <input type="email" id="usernameoremail" name="usernameoremail" v-model="usernameOrEmail" v-validate="'required'">
-        <div v-show="errors.has('usernameoremail')">{{ errors.first('usernameoremail') }}</div>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" v-model="password" v-validate="'required'">
-        <div v-show="errors.has('password')">{{ errors.first('password') }}</div>
-        <button>
-          Login
-        </button>
-      </fieldset>      
-    </form>
-      <app-social-login></app-social-login>
+      <h2>Login</h2>
+      <div 
+        v-if="error"
+        class="error">
+        {{ error }}
+      </div>
+      <form 
+        novalidate
+        @submit="login">
+        <fieldset>
+          <label for="usernameoremail">Username or Email</label>
+          <input 
+            v-validate="'required'"
+            id="usernameoremail" 
+            v-model="usernameOrEmail" 
+            type="email" 
+            name="usernameoremail" >
+          <div v-show="errors.has('usernameoremail')">{{ errors.first('usernameoremail') }}</div>
+          <label for="password">Password</label>
+          <input 
+            v-validate="'required'"
+            id="password" 
+            v-model="password" 
+            type="password" 
+            name="password">
+          <div v-show="errors.has('password')">{{ errors.first('password') }}</div>
+          <button>
+            Login
+          </button>
+        </fieldset>      
+      </form>
+      <app-social-login/>
     </div>
   </div>
 </template>

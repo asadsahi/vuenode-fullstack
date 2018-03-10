@@ -16,13 +16,13 @@ export function createStore() {
       error: ''
     },
     getters: {
-      isAuthenticated: (state) => {
+      isAuthenticated: state => {
         return state.isAuthenticated;
       },
-      user: (state) => {
+      user: state => {
         return state.user;
       },
-      error: (state) => {
+      error: state => {
         return state.error;
       }
     },
@@ -31,22 +31,28 @@ export function createStore() {
         context.commit('logout');
       },
       login(context, credentials) {
-        return dataService.post('api/auth/signin', credentials)
+        return dataService
+          .post('api/auth/signin', credentials)
           .then(res => {
             context.commit('login', res.data);
             return res.data;
           })
           .catch(err => {
-            context.state.error = err.response.data ? err.response.data[0] : 'Login error';
+            context.state.error = err.response.data
+              ? err.response.data[0]
+              : 'Login error';
           });
       },
       register(context, data) {
-        return dataService.post('api/auth/signup', data)
+        return dataService
+          .post('api/auth/signup', data)
           .then(res => {
             return res.data;
           })
           .catch(err => {
-            context.state.error = err.response.data ? err.response.data[0] : 'Login error';
+            context.state.error = err.response.data
+              ? err.response.data[0]
+              : 'Login error';
           });
       }
     },

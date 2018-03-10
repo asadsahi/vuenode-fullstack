@@ -9,26 +9,25 @@ import titleMixin from './util/title';
 import * as filters from './util/filters';
 
 // mixin for handling title
-Vue.mixin(titleMixin)
+Vue.mixin(titleMixin);
 // plugins
 createValidation();
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
-
+  Vue.filter(key, filters[key]);
+});
 
 // Expose a factory function that creates a fresh set of store, router,
 // app instances on each call (which is called for each SSR request)
 export function createApp() {
   // create store and router instances
-  const store = createStore()
-  const router = createRouter()
+  const store = createStore();
+  const router = createRouter();
 
   // sync the router with the vuex store.
   // this registers `store.state.route`
-  sync(store, router)
+  sync(store, router);
 
   // create the app instance.
   // here we inject the router, store and ssr context to all child components,
@@ -37,11 +36,11 @@ export function createApp() {
     router,
     store,
     render: h => h(App)
-  })
+  });
 
   // Initial check for user being logged in or not
   if (typeof window !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', function (event) {
+    document.addEventListener('DOMContentLoaded', function(event) {
       let token = window.localStorage.getItem('token');
       if (token) {
         var decoded = decode(token);
@@ -58,5 +57,5 @@ export function createApp() {
   // expose the app, the router and the store.
   // note we are not mounting the app here, since bootstrapping will be
   // different depending on whether we are in a browser or on the server.
-  return { app, router, store }
+  return { app, router, store };
 }
