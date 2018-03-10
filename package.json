@@ -16,7 +16,7 @@
     "lint": "eslint --ext .js,.vue src tests",
     "fix": "eslint --ext .js,.vue src tests --fix",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
-    "precommit": "npm run lint-check && npm run lint",
+    "precommit": "npm run eslint-check && npm run lint",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand",
