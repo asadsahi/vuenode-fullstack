@@ -15,7 +15,7 @@ const morgan = require('morgan');
 const microcache = require('route-cache');
 const resolve = file => path.resolve(__dirname, file);
 const { createBundleRenderer } = require('vue-server-renderer');
-const logger = require('./src/api/features/logger');
+const logger = require('./server/features/logger');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
 const ngrok = process.env.ENABLE_TUNNEL ? require('ngrok') : false;
@@ -24,27 +24,35 @@ const serverInfo =
   `express/${require('express/package.json').version} ` +
   `vue-server-renderer/${require('vue-server-renderer/package.json').version}`;
 
-global.appConfig = isDev ? require('./src/api/config.dev.json') : require('./src/api/config.prod.json');
-global.appConfig = _.merge(global.appConfig, { isDev, isProd });
-global.errorHandler = require('./src/api/features/core').errorHandler;
+global.appConfig = _.merge(
+  {},
+  require('./server/config.json'),
+  require('./server/config.prod.json'),
+  { isDev, isProd }
+);
+global.errorHandler = require('./server/features/core').errorHandler;
+
 const app = express();
-const db = require('./src/api/db/models');
+const db = require('./server/db/models');
 const server = http.createServer(app);
 const io = socketIO(server);
 
 function createRenderer(bundle, options) {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
-  return createBundleRenderer(bundle, Object.assign(options, {
-    // for component caching
-    cache: LRU({
-      max: 1000,
-      maxAge: 1000 * 60 * 15
-    }),
-    // this is only needed when vue-server-renderer is npm-linked
-    basedir: resolve('./dist'),
-    // recommended for performance
-    runInNewContext: false
-  }))
+  return createBundleRenderer(
+    bundle,
+    Object.assign(options, {
+      // for component caching
+      cache: LRU({
+        max: 1000,
+        maxAge: 1000 * 60 * 15
+      }),
+      // this is only needed when vue-server-renderer is npm-linked
+      basedir: resolve('./dist'),
+      // recommended for performance
+      runInNewContext: false
+    })
+  );
 }
 
 let renderer;
@@ -70,26 +78,27 @@ if (isProd) {
     app,
     templatePath,
     (bundle, options) => {
-      renderer = createRenderer(bundle, options)
+      renderer = createRenderer(bundle, options);
     }
   );
 }
 
-const serve = (path, cache) => express.static(resolve(path), {
-  maxAge: cache && isProd ? 1000 * 60 * 60 * 24 * 30 : 0
-});
+const serve = (path, cache) =>
+  express.static(resolve(path), {
+    maxAge: cache && isProd ? 1000 * 60 * 60 * 24 * 30 : 0
+  });
 
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json()); // handle json data
 app.use(bodyParser.urlencoded({ extended: true })); // handle URL-encoded data
-app.use(compression({ threshold: 0 }))
+app.use(compression({ threshold: 0 }));
 app.use(cookieParser());
-app.use(favicon('./public/images/favicon.ico'))
-app.use('/dist', serve('./dist', true))
-app.use('/public', serve('./public', true))
-app.use('/manifest.json', serve('./manifest.json', true))
-app.use('/service-worker.js', serve('./dist/service-worker.js'))
+app.use(favicon('./public/images/favicon.ico'));
+app.use('/dist', serve('./dist', true));
+app.use('/public', serve('./public', true));
+app.use('/manifest.json', serve('./manifest.json', true));
+app.use('/service-worker.js', serve('./dist/service-worker.js'));
 app.disable('x-powered-by');
 app.use(morgan('dev'));
 // since this app has no user-specific content, every page is micro-cacheable.
@@ -98,27 +107,27 @@ app.use(morgan('dev'));
 // headers.
 // 1-second microcache.
 // https://www.nginx.com/blog/benefits-of-microcaching-nginx/
-app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl))
+app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl));
 
-require('./src/api')(app);
+require('./server/index')(app);
 function render(req, res) {
-  const s = Date.now()
+  const s = Date.now();
 
-  res.setHeader("Content-Type", "text/html")
-  res.setHeader("Server", serverInfo)
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Server', serverInfo);
 
   const handleError = err => {
     if (err.url) {
-      res.redirect(err.url)
+      res.redirect(err.url);
     } else if (err.code === 404) {
-      res.status(404).send('404 | Page Not Found')
+      res.status(404).send('404 | Page Not Found');
     } else {
       // Render Error Page or Redirect
       res.status(500).send('500 | Internal Server Error');
       console.error(`error during render : ${req.url}`);
       console.error(err.stack);
     }
-  }
+  };
 
   const context = {
     title: 'Vue and Node Fullstack Application', // default title
@@ -128,16 +137,21 @@ function render(req, res) {
     if (err) {
       return handleError(err);
     }
-    res.send(html)
+    res.send(html);
     if (!isProd) {
-      console.log(`whole request: ${Date.now() - s}ms`)
+      console.log(`whole request: ${Date.now() - s}ms`);
     }
   });
 }
 
-app.get('*', isProd ? render : (req, res) => {
-  readyPromise.then(() => render(req, res))
-});
+app.get(
+  '*',
+  isProd
+    ? render
+    : (req, res) => {
+        readyPromise.then(() => render(req, res));
+      }
+);
 
 const port = process.env.PORT || 3000;
 // get the intended host and port number, use localhost and port 3000 if not provided
@@ -146,7 +160,7 @@ const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
 
 // Start your app.
-server.listen(port, host, (err) => {
+server.listen(port, host, err => {
   if (err) {
     return logger.error(err.message);
   }
