@@ -59,7 +59,6 @@ export default {
     login(event) {
       event.preventDefault();
       this.$validator.validateAll().then(result => {
-        console.log(result);
         if (result) {
           this.$store.dispatch('login', {
             usernameOrEmail: this.usernameOrEmail,

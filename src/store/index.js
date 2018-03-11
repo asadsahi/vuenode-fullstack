@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { router } from '../router';
 import { dataService, decode } from '../services';
 import postsModule from './posts';
 
 Vue.use(Vuex);
 
-export function createStore() {
+function createStore() {
   return new Vuex.Store({
     modules: {
       postsModule
@@ -60,12 +61,14 @@ export function createStore() {
       logout(state) {
         if (typeof window !== 'undefined') {
           window.localStorage.setItem('token', null);
+          router.push('/');
         }
         state.isAuthenticated = false;
       },
       login(state, token) {
         if (typeof window !== 'undefined') {
           window.localStorage.setItem('token', token);
+          router.push('/');
         }
         state.isAuthenticated = true;
         state.user = decode(token);
@@ -73,3 +76,5 @@ export function createStore() {
     }
   });
 }
+
+export const store = createStore();

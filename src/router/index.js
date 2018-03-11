@@ -17,7 +17,7 @@ const NotFoundView = () => import('../views/NotFoundView.vue');
 // All examples
 const ExamplesView = () => import('../views/examples/ExamplesView.vue');
 
-export function createRouter() {
+function createRouter() {
   return new Router({
     mode: 'history',
     linkActiveClass: 'active',
@@ -44,3 +44,5 @@ export function createRouter() {
     ]
   });
 }
+
+export const router = createRouter();
