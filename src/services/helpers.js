@@ -1,12 +1,10 @@
 import { decode } from './jwt-decode';
 import { ACCESS_TOKEN } from '../constants';
+import { sessionService } from '../services';
 
-export const storeAuth = token => {
-  window.localStorage.setItem(ACCESS_TOKEN, token);
-  return decode(token);
-};
+const isBrowser = typeof window !== 'undefined';
 
-export const parseQueryString = () => {
+const parseQueryString = () => {
   const str = window.location.search;
   const objURL = {};
 
@@ -17,7 +15,7 @@ export const parseQueryString = () => {
 };
 
 // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-export const guid = () => {
+const guid = () => {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
@@ -25,3 +23,5 @@ export const guid = () => {
   }
   return `${s4() + s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 };
+
+export { isBrowser, parseQueryString, guid };

@@ -1,13 +1,12 @@
-import { dataService } from '../services';
+import { dataService, isBrowser } from '../services';
 
 const defaultState = {
   posts: [],
   categoryId: 0
 };
 
-const inBrowser = typeof window !== 'undefined';
 const state =
-  inBrowser && window.__INITIAL_STATE__
+  isBrowser && window.__INITIAL_STATE__
     ? window.__INITIAL_STATE__.postsModule
     : defaultState;
 

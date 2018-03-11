@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { router } from '../router';
-import { dataService, decode } from '../services';
+import { dataService, decode, sessionService, isBrowser } from '../services';
+import { ACCESS_TOKEN } from '../constants';
 import postsModule from './posts';
 
 Vue.use(Vuex);
@@ -14,7 +15,8 @@ function createStore() {
     state: {
       isAuthenticated: false,
       user: null,
-      error: ''
+      error: '',
+      appData: isBrowser && window.__PRELOADEDSTATE__
     },
     getters: {
       isAuthenticated: state => {
@@ -22,6 +24,9 @@ function createStore() {
       },
       user: state => {
         return state.user;
+      },
+      appData: state => {
+        return state.appData;
       },
       error: state => {
         return state.error;
@@ -60,14 +65,14 @@ function createStore() {
     mutations: {
       logout(state) {
         if (typeof window !== 'undefined') {
-          window.localStorage.setItem('token', null);
+          sessionService.clear();
           router.push('/');
         }
         state.isAuthenticated = false;
       },
       login(state, token) {
         if (typeof window !== 'undefined') {
-          window.localStorage.setItem('token', token);
+          sessionService.set(ACCESS_TOKEN, token);
           router.push('/');
         }
         state.isAuthenticated = true;

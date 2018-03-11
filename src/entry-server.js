@@ -11,8 +11,7 @@ export default context => {
   return new Promise((resolve, reject) => {
     const s = isDev && Date.now();
     const { app, router, store } = createApp();
-
-    const { url } = context;
+    const { url, appData } = context;
     const { fullPath } = router.resolve(url).route;
 
     if (fullPath !== url) {
@@ -34,14 +33,13 @@ export default context => {
       // which is resolved when the action is complete and store state has been
       // updated.
       Promise.all(
-        matchedComponents.map(
-          ({ asyncData }) =>
-            asyncData &&
+        matchedComponents.map(({ asyncData }) => {
+          asyncData &&
             asyncData({
               store,
               route: router.currentRoute
-            })
-        )
+            });
+        })
       )
         .then(() => {
           isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`);
@@ -51,6 +49,7 @@ export default context => {
           // inline the state in the HTML response. This allows the client-side
           // store to pick-up the server-side state without having to duplicate
           // the initial data fetching on the client.
+          store.state.appData = appData;
           context.state = store.state;
           resolve(app);
         })

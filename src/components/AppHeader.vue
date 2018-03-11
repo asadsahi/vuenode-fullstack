@@ -11,31 +11,32 @@
       </router-link>
       <router-link 
         exact 
-        to="/">Home</router-link>
+        to="/">{{ appData.content.app_nav_home }}</router-link>
       <router-link 
         exact 
-        to="/about">About</router-link>
+        to="/about">{{ appData.content.app_nav_about }}</router-link>
       <router-link 
         exact 
-        to="/examples">Examples</router-link>
+        to="/examples">{{ appData.content.app_nav_examples }}</router-link>
       <router-link 
         v-if="isAuthenticated" 
         to="/profile">{{ user.username }}</router-link>
       <a 
         v-if="isAuthenticated" 
-        @click="logout()">Logout</a>
+        href="javascript:void(0)"
+        @click="logout()">{{ appData.content.app_nav_logout }}</a>
       <router-link 
         v-if="!isAuthenticated" 
-        to="/register">Register</router-link>
+        to="/register">{{ appData.content.app_nav_register }}</router-link>
       <router-link 
         v-if="!isAuthenticated" 
-        to="/login">Login</router-link>
+        to="/login">{{ appData.content.app_nav_login }}</router-link>
       <a 
+        :href="appData.content.app_repo_url" 
         class="github" 
-        href="https://github.com/asadsahi/vuenode-fullstack" 
         target="_blank" 
         rel="noopener">
-        Vue Node Fullstack
+        {{ appData.content.app_title }}
       </a>
     </nav>
   </header>
@@ -49,7 +50,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'user'])
+    ...mapGetters(['isAuthenticated', 'user', 'appData'])
   },
   methods: {
     ...mapActions({

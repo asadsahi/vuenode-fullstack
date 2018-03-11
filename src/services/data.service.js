@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { sessionService } from './session.service';
+import { ACCESS_TOKEN } from '../constants';
 
 // https://github.com/axios/axios
 
@@ -8,7 +10,7 @@ axios.interceptors.request.use(config => {
   if (typeof window === 'undefined') {
     return config;
   }
-  const token = window.localStorage.getItem('token');
+  const token = sessionService.get(ACCESS_TOKEN);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

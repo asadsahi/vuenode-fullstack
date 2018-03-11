@@ -1,9 +1,8 @@
 <template>
   <div class="row">
     <div class="column">
-      <h1>Vue Node fullstack</h1> A Single Page Application built using Vue and
-      Nodejs
-      <p/>
+      <h1>{{ appData.content.app_title }}</h1> 
+      {{ appData.content.app_description }}
       <br>
       <div>
         <router-link 
@@ -15,5 +14,10 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from 'vuex';
+export default {
+  computed: {
+    ...mapGetters(['appData'])
+  }
+};
 </script>

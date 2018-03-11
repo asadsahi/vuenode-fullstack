@@ -4,7 +4,8 @@ import { store } from './store';
 import { router } from './router';
 import { createValidation } from './forms';
 import { sync } from 'vuex-router-sync';
-import { decode } from './services';
+import { decode, sessionService } from './services';
+import { ACCESS_TOKEN } from './constants';
 import titleMixin from './util/title';
 import * as filters from './util/filters';
 
@@ -37,7 +38,7 @@ export function createApp() {
   // Initial check for user being logged in or not
   if (typeof window !== 'undefined') {
     document.addEventListener('DOMContentLoaded', function(event) {
-      let token = window.localStorage.getItem('token');
+      let token = sessionService.get(ACCESS_TOKEN);
       if (token) {
         var decoded = decode(token);
         var expiration = decoded.exp;

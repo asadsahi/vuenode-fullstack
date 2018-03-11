@@ -110,7 +110,7 @@ app.use(morgan('dev'));
 app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl));
 
 require('./server/index')(app);
-function render(req, res) {
+async function render(req, res) {
   const s = Date.now();
 
   res.setHeader('Content-Type', 'text/html');
@@ -129,14 +129,25 @@ function render(req, res) {
     }
   };
 
+  const uc = require('./server/features/app/app.controller');
+  const appData = await uc.content(req);
+
   const context = {
-    title: 'Vue and Node Fullstack Application', // default title
-    url: req.url
+    title: appData.content.app_title, // default title
+    url: req.url,
+    appData
   };
   renderer.renderToString(context, (err, html) => {
     if (err) {
       return handleError(err);
     }
+    html = html.replace(
+      '<div id="preloadedstate"></div>',
+      `<script>window.__PRELOADEDSTATE__ = ${JSON.stringify(appData).replace(
+        /</g,
+        '\\u003c'
+      )}</script>`
+    );
     res.send(html);
     if (!isProd) {
       console.log(`whole request: ${Date.now() - s}ms`);

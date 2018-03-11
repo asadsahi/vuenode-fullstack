@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="Description" content="A fullstack PWA application built using VueJs and Node">
+  <meta name="Description" content="{{ appData.content.app_description }}">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="apple-touch-icon" sizes="120x120" href="/public/images/apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
@@ -15,8 +15,8 @@
   <link rel="manifest" href="/manifest.json">
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="vuenode-fullstack" />
-  <meta property="og:description" content="Vue Node Fullstack" />
+  <meta property="og:title" content="{{ title }}" />
+  <meta property="og:description" content="{{ appData.content.app_description }}" />
   <meta property="og:url" content="urlpath" />
   <meta property="og:image" content="/public/images/apple-touch-icon.png" />
   <meta property="og:image:width" content="180" />
@@ -56,6 +56,9 @@
     <a href="#app">skip to content</a>
   </div>
   <!--vue-ssr-outlet-->
+
+  <div id="preloadedstate"></div>
+
 </body>
 
 </html>
