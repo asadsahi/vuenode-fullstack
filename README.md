@@ -27,7 +27,12 @@ Fullstack application built using Vue and NodeJs with server side rendering.
   - CSS extraction for production
 - Animation
   - Effects when switching route views
-  - Real-time list updates with FLIP Animation
+- Unit testing
+  - Using [Jest](https://facebook.github.io/jest/)
+- E2E testing
+  - Using [Testcafe](https://devexpress.github.io/testcafe/)
+- Examples
+  - Read to roll examples for any project
 
 ## Architecture Overview
 
@@ -37,13 +42,13 @@ Fullstack application built using Vue and NodeJs with server side rendering.
 
 ## Build Setup
 
-**Requires Node.js 7+**
+**Requires Node.js 8+**
 
 ``` bash
 # install dependencies
 npm install # or yarn
 
-# serve in dev mode, with hot reload at localhost:8080
+# serve in dev mode, with hot reload at localhost:3000
 npm run dev # or yarn dev
 
 # build for production
@@ -51,6 +56,28 @@ npm run build:prod # or yarn build:prod
 
 # serve in production mode
 npm start # or yarn start
+
+# serve through ngrok tunnel
+# Details: (this gives an external url to browse from internet for the purpose of testing while developing locally without deploying to server)
+## Dev
+npm run dev:tunnel # or yarn dev:tunnel
+## Prod
+npm run prod:tunnel # or yarn prod:tunnel
+
+# run unit tests
+## single run
+npm test # or yarn test
+## watch mode
+npm run test:watch # or yarn test:watch
+
+# end-to-end tests
+# start server
+npm run dev # or yarn dev
+
+## single run
+npm run e2e # or yarn e2e
+## watch mode
+npm run e2e:watch # or yarn e2e:watch
 ```
 
 ## Credist
