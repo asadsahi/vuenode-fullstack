@@ -130,7 +130,11 @@ async function render(req, res) {
   };
 
   const uc = require('./server/features/app/app.controller');
-  const appData = await uc.content(req);
+  let appData = await uc.content(req);
+
+  if (req.query.access_token) {
+    appData = _.extend(appData, { access_token: req.query.access_token });
+  }
 
   const context = {
     title: appData.content.app_title, // default title

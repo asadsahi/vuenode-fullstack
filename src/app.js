@@ -38,6 +38,16 @@ export function createApp() {
   // Initial check for user being logged in or not
   if (typeof window !== 'undefined') {
     document.addEventListener('DOMContentLoaded', function(event) {
+      if (
+        window.__PRELOADEDSTATE__ &&
+        window.__PRELOADEDSTATE__[ACCESS_TOKEN]
+      ) {
+        sessionService.set(
+          ACCESS_TOKEN,
+          window.__PRELOADEDSTATE__[ACCESS_TOKEN]
+        );
+        router.push('/');
+      }
       let token = sessionService.get(ACCESS_TOKEN);
       if (token) {
         var decoded = decode(token);
