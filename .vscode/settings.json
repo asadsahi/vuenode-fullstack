@@ -12,7 +12,6 @@
     "**/node_modules": true
   },
   "eslint.enable": true,
-  "editor.formatOnSave": true,
   "eslint.validate": [
     "javascript",
     "javascriptreact",

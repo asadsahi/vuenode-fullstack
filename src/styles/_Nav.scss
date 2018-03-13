@@ -1,26 +1,56 @@
 @import 'Color';
 
-ul.sub-nav {
-    list-style: none;
+.header {
+    background-color: $color-primary;
+    position: fixed;
+    z-index: 999;
+    height: 55px;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.header .inner {
+    max-width: 800px;
+    box-sizing: border-box;
+    margin: 0px auto;
+    padding: 15px 5px;
+}
+
+.header a {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 24px;
+    transition: color 0.15s ease;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 300;
+    letter-spacing: 0.075em;
+    margin-right: 1.8em;
+}
+
+.header a:hover {
+    color: $color-initial;
+}
+
+.header a.router-link-active {
+    color: $color-initial;
+    font-weight: 400;
+}
+
+.header a:nth-child(6) {
+    margin-right: 0;
+}
+
+.header .github {
+    color: $color-initial;
+    font-size: 0.9em;
     margin: 0;
-    padding: 0;
-    display: flex;
-    background: $color-primary;
-    li {
-      color: red;
-      height: 23.4px;
-      a {
-        border-bottom: 0.1rem solid #d1d1d1;
-        color: $color-font;
-        display: block;
-        font-size: 1.2rem;
-        padding: 0.8rem 2rem;
-        position: relative;
-        text-align: center;
-        &:hover {
-          border-bottom-color: $color-primary;
-          color: $color-initial;
-        }
-      }
-    }
-  }
+    float: right;
+}
+
+.logo {
+    width: 24px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
