@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const path = require('path');
 const base = require('./webpack.base.config');
 const SWPrecachePlugin = require('sw-precache-webpack-plugin');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
@@ -9,41 +10,38 @@ const config = merge(base, {
     app: './src/entry-client.js'
   },
   resolve: {
-    alias: {
-    }
+    alias: {}
   },
   plugins: [
     // strip dev-only code in Vue source
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.NODE_ENV': JSON.stringify(
+        process.env.NODE_ENV || 'development'
+      ),
       'process.env.VUE_ENV': '"client"'
     }),
     new VueSSRClientPlugin()
   ],
   optimization: {
     runtimeChunk: {
-      name: "manifest"
+      name: 'manifest'
     },
     // extract webpack runtime & manifest to avoid vendor chunk hash changing
     // on every build.
     // extract vendor chunks for better caching
     splitChunks: {
-      chunks: "initial",
+      chunks: 'initial',
       cacheGroups: {
-        vendors: function (module) {
-          // a module is extracted into the vendor chunk if...
-          return (
-            // it's inside node_modules
-            /node_modules/.test(module.context) &&
-            // and not a CSS/SCSS file (due to extract-text-webpack-plugin limitation)
-            !/\.css$/.test(module.request) &&
-            !/\.scss$/.test(module.request)
-          )
+        vendors: {
+          name: 'vendor',
+          test: path.resolve(__dirname, 'node_modules'),
+          enforce: true,
+          chunks: 'initial'
         }
       }
     }
-  },
-})
+  }
+});
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
@@ -73,7 +71,7 @@ if (process.env.NODE_ENV === 'production') {
         }
       ]
     })
-  )
+  );
 }
 
-module.exports = config
+module.exports = config;
