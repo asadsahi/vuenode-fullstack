@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const { VueLoaderPlugin } = require('vue-loader');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const vueConfig = require('./vue-loader.config');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -69,6 +69,10 @@ module.exports = {
   },
   mode: process.env.NODE_ENV,
   plugins: isProd
-    ? [new webpack.optimize.ModuleConcatenationPlugin(), extractSCSS]
+    ? [
+        new VueLoaderPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        extractSCSS
+      ]
     : [new VueLoaderPlugin(), new FriendlyErrorsPlugin()]
 };
