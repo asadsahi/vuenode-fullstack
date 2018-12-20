@@ -1,5 +1,6 @@
 /* eslint consistent-return: "off" */
 const DB = require('../../db/models');
+
 const { ContentText, Language } = DB;
 const errorHandler = require('../core/errorHandler');
 
@@ -9,19 +10,19 @@ const errorHandler = require('../core/errorHandler');
 exports.list = async (req, res) => {
   const language = await Language.findOne({
     where: {
-      locale: req.query.lang
-    }
+      locale: req.query.lang,
+    },
   });
 
   ContentText.findAll({
     include: [
       {
-        model: DB.Content
-      }
+        model: DB.Content,
+      },
     ],
     where: {
-      languageid: language.id
-    }
+      languageid: language.id,
+    },
   })
     .then(list => {
       const response = {};
@@ -41,25 +42,25 @@ exports.list = async (req, res) => {
 exports.get = async (req, res) => {
   const language = await Language.findOne({
     where: {
-      locale: req.params.locale
-    }
+      locale: req.params.locale,
+    },
   });
 
   ContentText.findAll({
     include: [
       {
-        model: DB.Content
-      }
+        model: DB.Content,
+      },
     ],
     where: {
-      languageid: language.id
-    }
+      languageid: language.id,
+    },
   })
     .then(contentTextList => {
       const list = contentTextList.map(item => ({
         id: item.id,
         text: item.text,
-        contentKey: item.Content.key
+        contentKey: item.Content.key,
       }));
       res.json(list);
     })
@@ -72,13 +73,13 @@ exports.get = async (req, res) => {
 exports.put = (req, res) => {
   ContentText.findOne({
     where: {
-      id: req.body.id
-    }
+      id: req.body.id,
+    },
   })
     .then(contentText => {
       contentText
         .update({
-          text: req.body.text
+          text: req.body.text,
         })
         .then(updatedContentText => {
           res.json(updatedContentText);

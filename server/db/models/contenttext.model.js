@@ -2,10 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const ContentText = sequelize.define(
     'ContentText',
     {
-      text: DataTypes.STRING
+      text: DataTypes.STRING,
     },
     {
-      timestamps: false
+      timestamps: false,
     }
   );
 

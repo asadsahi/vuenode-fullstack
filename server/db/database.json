@@ -2,16 +2,22 @@
   "development": {
     "dialect": "sqlite",
     "storage": "./db.sqlite",
-    "logging": false
+    "logging": false,
+    "use_env_variable": false,
+    "operatorsAliases": false
   },
   "test": {
     "logging": false,
     "dialect": "sqlite",
-    "storage": ":memory:"
+    "storage": ":memory:",
+    "use_env_variable": false,
+    "operatorsAliases": false
   },
   "production": {
     "dialect": "sqlite",
     "storage": "./db.sqlite",
-    "logging": false
+    "logging": false,
+    "use_env_variable": false,
+    "operatorsAliases": false
   }
 }

@@ -11,14 +11,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const microcache = require('route-cache');
 const resolve = file => path.resolve(__dirname, file);
 const { createBundleRenderer } = require('vue-server-renderer');
-const logger = require('./server/features/logger');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
 const ngrok = process.env.ENABLE_TUNNEL ? require('ngrok') : false;
-const useMicroCache = process.env.MICRO_CACHE !== 'false';
 const serverInfo =
   `express/${require('express/package.json').version} ` +
   `vue-server-renderer/${require('vue-server-renderer/package.json').version}`;
@@ -32,7 +29,6 @@ global.appConfig = _.merge(
 global.errorHandler = require('./server/features/core').errorHandler;
 
 const app = express();
-const db = require('./server/db/models');
 const server = http.createServer(app);
 const io = socketIO(server);
 
@@ -95,13 +91,6 @@ app.use('/manifest.json', serve('./manifest.json', true));
 app.use('/service-worker.js', serve('./dist/service-worker.js'));
 app.disable('x-powered-by');
 app.use(morgan('dev'));
-// since this app has no user-specific content, every page is micro-cacheable.
-// if your app involves user-specific content, you need to implement custom
-// logic to determine whether a request is cacheable based on its url and
-// headers.
-// 1-second microcache.
-// https://www.nginx.com/blog/benefits-of-microcaching-nginx/
-app.use(microcache.cacheSeconds(1, req => useMicroCache && req.originalUrl));
 
 require('./server/index')(app);
 async function render(req, res) {
@@ -163,30 +152,14 @@ app.get(
 );
 
 const port = process.env.PORT || 3000;
-// get the intended host and port number, use localhost and port 3000 if not provided
-const customHost = process.env.HOST;
-const host = customHost || null; // Let http.Server use its default IPv6/4 host
-const prettyHost = customHost || 'localhost';
 
 // Start your app.
-server.listen(port, host, err => {
-  if (err) {
-    return logger.error(err.message);
-  }
-
-  // Connect to ngrok in dev mode
-  if (ngrok) {
-    ngrok.connect(
-      port,
-      (innerErr, url) => {
-        if (innerErr) {
-          return logger.error(innerErr);
-        }
-        return logger.appStarted(port, prettyHost, url);
-      }
-    );
-  } else {
-    return logger.appStarted(port, prettyHost);
-  }
-  return logger.appStarted(port, prettyHost);
+server.listen(port, () => {
+  console.log(
+    `
+    Localhost: ${`http://localhost:${port}`}
+    Environment: ${process.env.NODE_ENV}
+    SSR: ${global.appConfig.ssrEnabled}
+`
+  );
 });

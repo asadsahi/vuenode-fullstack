@@ -5,7 +5,7 @@ let acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke content Permissions
+ * Invoke customer Permissions
  */
 exports.invokeRolesPolicies = () => {
   acl.allow([
@@ -13,21 +13,8 @@ exports.invokeRolesPolicies = () => {
       roles: ['admin'],
       allows: [
         {
-          resources: '/api/content',
+          resources: '/api/customer',
           permissions: '*',
-        },
-        {
-          resources: '/api/content/:locale',
-          permissions: '*',
-        },
-      ],
-    },
-    {
-      roles: ['user'],
-      allows: [
-        {
-          resources: '/api/content',
-          permissions: ['get'],
         },
       ],
     },
@@ -35,7 +22,7 @@ exports.invokeRolesPolicies = () => {
 };
 
 /**
- * Check If content Policy Allows
+ * Check If customer Policy Allows
  */
 exports.isAllowed = (req, res, next) => {
   const roles = req.user ? req.user.roleNames : ['user'];
