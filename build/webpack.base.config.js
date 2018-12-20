@@ -3,11 +3,10 @@ const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const vueConfig = require('./vue-loader.config');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractSCSS = new ExtractTextPlugin({
-  filename: 'common.[chunkhash].css',
-  allChunks: true
-});
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -44,22 +43,12 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        use: isProd
-          ? extractSCSS.extract({
-              use: ['css-loader?minimize'],
-              fallback: 'vue-style-loader'
-            })
-          : ['vue-style-loader', 'css-loader']
-      },
-      {
-        test: /\.scss$/,
-        use: isProd
-          ? extractSCSS.extract({
-              use: ['css-loader?minimize', 'sass-loader'],
-              fallback: 'vue-style-loader'
-            })
-          : ['vue-style-loader', 'css-loader', 'sass-loader']
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
   },
@@ -72,7 +61,18 @@ module.exports = {
     ? [
         new VueLoaderPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
-        extractSCSS
+        new MiniCssExtractPlugin({
+          filename: '[name].[hash].css',
+          chunkFilename: '[id].[hash].css'
+        }),
+        new OptimizeCSSAssetsPlugin({})
       ]
-    : [new VueLoaderPlugin(), new FriendlyErrorsPlugin()]
+    : [
+        new VueLoaderPlugin(),
+        new FriendlyErrorsPlugin(),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].css'
+        })
+      ]
 };

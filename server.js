@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const LRU = require('lru-cache');
 const _ = require('lodash');
 const http = require('http');
 const socketIO = require('socket.io');
@@ -42,11 +41,6 @@ function createRenderer(bundle, options) {
   return createBundleRenderer(
     bundle,
     Object.assign(options, {
-      // for component caching
-      cache: LRU({
-        max: 1000,
-        maxAge: 1000 * 60 * 15
-      }),
       // this is only needed when vue-server-renderer is npm-linked
       basedir: resolve('./dist'),
       // recommended for performance
@@ -182,12 +176,15 @@ server.listen(port, host, err => {
 
   // Connect to ngrok in dev mode
   if (ngrok) {
-    ngrok.connect(port, (innerErr, url) => {
-      if (innerErr) {
-        return logger.error(innerErr);
+    ngrok.connect(
+      port,
+      (innerErr, url) => {
+        if (innerErr) {
+          return logger.error(innerErr);
+        }
+        return logger.appStarted(port, prettyHost, url);
       }
-      return logger.appStarted(port, prettyHost, url);
-    });
+    );
   } else {
     return logger.appStarted(port, prettyHost);
   }
