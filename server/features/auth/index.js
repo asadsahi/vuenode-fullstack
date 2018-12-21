@@ -11,11 +11,11 @@ module.exports = app => {
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 2,
-        jwksUri: `${stsAuthority}/.well-known/openid-configuration/jwks`,
+        jwksUri: `${stsAuthority}/.well-known/openid-configuration/jwks`
       }),
       audience: stsClient,
       issuer: stsAuthority,
-      algorithms: ['RS256'],
+      algorithms: ['RS256']
     })
   );
 };

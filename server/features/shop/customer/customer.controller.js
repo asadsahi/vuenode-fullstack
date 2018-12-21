@@ -12,8 +12,8 @@ exports.getAll = (req, res) => {
 exports.get = (req, res) => {
   Customers.findOne({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(customer => res.json(customer))
     .catch(err => res.status(400).send(err));
@@ -27,7 +27,7 @@ exports.post = (req, res) => {
     phoneNumber: req.body.phoneNumber,
     address: req.body.address,
     city: req.body.city,
-    gender: req.body.gender,
+    gender: req.body.gender
   })
     .then(newCustomer => res.json(newCustomer))
     .catch(err => res.status(400).send(err));
@@ -36,8 +36,8 @@ exports.post = (req, res) => {
 exports.put = (req, res) => {
   Customers.findOne({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(customer => {
       customer
@@ -48,7 +48,7 @@ exports.put = (req, res) => {
           phoneNumber: req.body.phoneNumber,
           address: req.body.address,
           city: req.body.city,
-          gender: req.body.gender,
+          gender: req.body.gender
         })
         .then(updatedCustomer => {
           res.json(updatedCustomer);
@@ -61,8 +61,8 @@ exports.put = (req, res) => {
 exports.delete = (req, res) => {
   Customers.destroy({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(deleteCount => res.json(deleteCount))
     .catch(err => {

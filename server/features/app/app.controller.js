@@ -7,16 +7,18 @@ const { ContentText, Language } = DB;
  */
 const getContent = async req => {
   const languages = await Language.findAll({});
-  const language = languages.find(l => l.locale === (req.cookies.lang || 'en-US'));
+  const language = languages.find(
+    l => l.locale === (req.cookies.lang || 'en-US')
+  );
   return ContentText.findAll({
     include: [
       {
-        model: DB.Content,
-      },
+        model: DB.Content
+      }
     ],
     where: {
-      languageid: language.id,
-    },
+      languageid: language.id
+    }
   })
     .then(list => {
       const content = {};
@@ -29,9 +31,9 @@ const getContent = async req => {
         cultures: languages.map(l => ({
           value: l.locale,
           text: `${l.description} - (${l.locale})`,
-          current: (req.cookies.lang || 'en-US') === l.locale,
+          current: (req.cookies.lang || 'en-US') === l.locale
         })),
-        content,
+        content
       };
     })
     .catch(err => Promise.reject(err));

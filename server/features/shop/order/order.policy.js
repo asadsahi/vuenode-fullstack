@@ -14,10 +14,10 @@ exports.invokeRolesPolicies = () => {
       allows: [
         {
           resources: '/api/order',
-          permissions: '*',
-        },
-      ],
-    },
+          permissions: '*'
+        }
+      ]
+    }
   ]);
 };
 
@@ -28,15 +28,20 @@ exports.isAllowed = (req, res, next) => {
   const roles = req.user ? req.user.roleNames : ['user'];
 
   // Check for user roles
-  acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), (err, isAllowed) => {
-    if (err) {
-      // An authorization error occurred
-      return res.status(500).send('Unexpected authorization error');
+  acl.areAnyRolesAllowed(
+    roles,
+    req.route.path,
+    req.method.toLowerCase(),
+    (err, isAllowed) => {
+      if (err) {
+        // An authorization error occurred
+        return res.status(500).send('Unexpected authorization error');
+      }
+      if (isAllowed) {
+        // Access granted! Invoke next middleware
+        return next();
+      }
+      return res.status(403).json('User is not authorized');
     }
-    if (isAllowed) {
-      // Access granted! Invoke next middleware
-      return next();
-    }
-    return res.status(403).json('User is not authorized');
-  });
+  );
 };

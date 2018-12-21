@@ -43,6 +43,10 @@ module.exports = {
         }
       },
       {
+        test: /\.(svg|woff|woff2|ttf|eot|otf)([\?]?.*)$/,
+        loader: 'file-loader?name=assets/fonts/[name].[ext]'
+      },
+      {
         test: /\.(sa|sc|c)ss$/,
         use: [
           isProd ? MiniCssExtractPlugin.loader : 'vue-style-loader',

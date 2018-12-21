@@ -1,14 +1,14 @@
 <template>
-  <div id="app">
-    <app-header/>
-    <div class="container">
-      <transition 
+  <div id="app" class="container">
+    <AppHeader />
+    <main class="main">
+      <Transition 
         name="fade" 
         mode="out-in">
-        <router-view class="view"/>
-      </transition>
-    </div>
-    <app-footer/>
+        <router-view class="view" />
+      </Transition>
+    </main>
+    <AppFooter />
   </div>
 </template>
 <script>
@@ -16,8 +16,8 @@ import AppHeader from './components/AppHeader.vue';
 import AppFooter from './components/AppFooter.vue';
 export default {
   components: {
-    'app-header': AppHeader,
-    'app-footer': AppFooter
+    AppHeader,
+    AppFooter
   }
 };
 </script>

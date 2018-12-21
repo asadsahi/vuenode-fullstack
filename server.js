@@ -87,6 +87,12 @@ app.use(cookieParser());
 app.use(favicon('./public/images/favicon.ico'));
 app.use('/dist', serve('./dist', true));
 app.use('/public', serve('./public', true));
+if (isDev) {
+  app.use('/assets', express.static(path.resolve('public', 'assets')));
+} else {
+  app.use('/assets', express.static(path.resolve('dist', 'assets')));
+}
+
 app.use('/manifest.json', serve('./manifest.json', true));
 app.use('/service-worker.js', serve('./dist/service-worker.js'));
 app.disable('x-powered-by');

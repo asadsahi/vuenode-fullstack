@@ -16,6 +16,14 @@ export function timeAgo(time) {
   }
 }
 
+export function translate(key) {
+  if (!key) return '';
+  if (typeof window !== 'undefined') {
+    const value = window.__INITIAL_STATE__.appData.content[key];
+    return value;
+  }
+}
+
 function pluralize(time, label) {
   if (time === 1) {
     return time + label;

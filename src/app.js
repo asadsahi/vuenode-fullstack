@@ -4,8 +4,6 @@ import { store } from './store';
 import { router } from './router';
 import { createValidation } from './forms';
 import { sync } from 'vuex-router-sync';
-import { decode, sessionService } from './services';
-import { ACCESS_TOKEN } from './constants';
 import titleMixin from './util/title';
 import * as filters from './util/filters';
 
@@ -37,27 +35,24 @@ export function createApp() {
 
   // Initial check for user being logged in or not
   if (typeof window !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', function(event) {
-      if (
-        window.__PRELOADEDSTATE__ &&
-        window.__PRELOADEDSTATE__[ACCESS_TOKEN]
-      ) {
-        sessionService.set(
-          ACCESS_TOKEN,
-          window.__PRELOADEDSTATE__[ACCESS_TOKEN]
-        );
-        router.push('/');
+    document.addEventListener('DOMContentLoaded', event => {
+      // Post logout redirect logic*-+9/
+      const { AuthService } = require('./services/auth.service');
+      var authService = new AuthService();
+      store.state.authService = authService;
+      if (window.location.href.indexOf('?postLogout=true') > 0) {
+        authService.signoutRedirectCallback().then(() => {
+          // clear the query string
+          router.push('/');
+        });
       }
-      let token = sessionService.get(ACCESS_TOKEN);
-      if (token) {
-        var decoded = decode(token);
-        var expiration = decoded.exp;
-        var unixTimestamp = new Date().getTime() / 1000;
-        if (expiration !== null && parseInt(expiration) - unixTimestamp > 0) {
-          store.state.isAuthenticated = true;
-          store.state.user = decoded;
+
+      store.state.authService.userManager.getUser().then(user => {
+        if (user) {
+          store.state.isLoggedIn = !!user;
+          store.state.user = user;
         }
-      }
+      });
     });
   }
 

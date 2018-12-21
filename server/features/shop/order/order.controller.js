@@ -12,8 +12,8 @@ exports.getAll = (req, res) => {
 exports.get = (req, res) => {
   Orders.findOne({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(product => res.json(product))
     .catch(err => res.status(400).send(err));
@@ -24,7 +24,7 @@ exports.post = (req, res) => {
     discount: req.body.discount,
     comments: req.body.comments,
     customerId: req.body.customerId,
-    productId: req.body.productId,
+    productId: req.body.productId
   })
     .then(newProduct => res.json(newProduct))
     .catch(err => res.status(400).send(err));
@@ -33,8 +33,8 @@ exports.post = (req, res) => {
 exports.put = (req, res) => {
   Orders.findOne({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(customer => {
       customer
@@ -42,7 +42,7 @@ exports.put = (req, res) => {
           discount: req.body.discount,
           comments: req.body.comments,
           customerId: req.body.customerId,
-          productId: req.body.productId,
+          productId: req.body.productId
         })
         .then(updatedCustomer => {
           res.json(updatedCustomer);
@@ -55,8 +55,8 @@ exports.put = (req, res) => {
 exports.delete = (req, res) => {
   Orders.destroy({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(deleteCount => res.json(deleteCount))
     .catch(err => {

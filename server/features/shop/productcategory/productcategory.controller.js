@@ -13,8 +13,8 @@ exports.getAll = (req, res) => {
 exports.get = (req, res) => {
   ProductCategories.findOne({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(product => res.json(product))
     .catch(err => res.status(400).send(err));
@@ -24,7 +24,7 @@ exports.post = (req, res) => {
   ProductCategories.create({
     name: req.body.name,
     description: req.body.description,
-    icon: req.body.icon,
+    icon: req.body.icon
   })
     .then(newProduct => res.json(newProduct))
     .catch(err => res.status(400).send(err));
@@ -33,15 +33,15 @@ exports.post = (req, res) => {
 exports.put = (req, res) => {
   ProductCategories.findOne({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(customer => {
       customer
         .update({
           name: req.body.name,
           description: req.body.description,
-          icon: req.body.icon,
+          icon: req.body.icon
         })
         .then(updatedCustomer => {
           res.json(updatedCustomer);
@@ -54,8 +54,8 @@ exports.put = (req, res) => {
 exports.delete = (req, res) => {
   ProductCategories.destroy({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
     .then(deleteCount => res.json(deleteCount))
     .catch(err => {

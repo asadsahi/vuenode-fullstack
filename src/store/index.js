@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { router } from '../router';
-import { dataService, decode, sessionService, isBrowser } from '../services';
-import { ACCESS_TOKEN } from '../constants';
+import { isBrowser } from '../services';
 import postsModule from './posts';
 
 Vue.use(Vuex);
@@ -13,70 +12,39 @@ function createStore() {
       postsModule
     },
     state: {
-      isAuthenticated: false,
+      isLoggedIn: false,
       user: null,
       error: '',
-      appData: isBrowser && window.__PRELOADEDSTATE__
+      appData: isBrowser && window.__PRELOADEDSTATE__,
+      authService: null
     },
     getters: {
-      isAuthenticated: state => {
-        return state.isAuthenticated;
-      },
-      user: state => {
-        return state.user;
-      },
-      appData: state => {
-        return state.appData;
-      },
-      error: state => {
-        return state.error;
-      }
+      isLoggedIn: state => state.isLoggedIn,
+      user: state => state.user,
+      appData: state => state.appData,
+      error: state => state.error
     },
     actions: {
-      logout(context) {
-        context.commit('logout');
-      },
-      login(context, credentials) {
-        return dataService
-          .post('api/auth/signin', credentials)
-          .then(res => {
-            context.commit('login', res.data);
-            return res.data;
-          })
-          .catch(err => {
-            context.state.error = err.response.data
-              ? err.response.data[0]
-              : 'Login error';
-          });
-      },
-      register(context, data) {
-        return dataService
-          .post('api/auth/signup', data)
-          .then(res => {
-            return res.data;
-          })
-          .catch(err => {
-            context.state.error = err.response.data
-              ? err.response.data[0]
-              : 'Login error';
-          });
-      }
+      login: context => context.state.authService.login(),
+      logout: context => context.state.authService.logout(),
+      profile: context => context.state.authService.profile(),
+      register: context => context.state.authService.register()
     },
     mutations: {
       logout(state) {
         if (typeof window !== 'undefined') {
-          sessionService.clear();
+          // sessionService.clear();
           router.push('/');
         }
-        state.isAuthenticated = false;
+        state.isLoggedIn = false;
       },
       login(state, token) {
         if (typeof window !== 'undefined') {
-          sessionService.set(ACCESS_TOKEN, token);
+          // sessionService.set(ACCESS_TOKEN, token);
           router.push('/');
         }
-        state.isAuthenticated = true;
-        state.user = decode(token);
+        state.isLoggedIn = true;
+        // state.user = decode(token);
       }
     }
   });
