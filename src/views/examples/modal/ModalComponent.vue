@@ -3,7 +3,6 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-
           <div class="modal-header">
             <slot name="header">
               default header
@@ -19,9 +18,7 @@
           <div class="modal-footer">
             <slot name="footer">
               default footer
-              <button 
-                class="modal-default-button" 
-                @click="$emit('close')">
+              <button class="modal-default-button" @click="$emit('close')">
                 OK
               </button>
             </slot>

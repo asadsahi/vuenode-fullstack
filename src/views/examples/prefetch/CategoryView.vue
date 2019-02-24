@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div 
-      v-for="post in posts"
-      :key="post.id"
-      class="card">
-      <app-post-card :post="post"/>
+    <div v-for="post in posts" :key="post.id" class="card">
+      <app-post-card :post="post" />
     </div>
   </div>
 </template>
@@ -19,11 +16,11 @@ const fetchInitialData = (store, route) => {
   return store.dispatch('postsModule/updateCategory', categoryId);
 };
 export default {
-  asyncData({ store, route }) {
-    return fetchInitialData(store, route);
-  },
   components: {
     'app-post-card': PostCard
+  },
+  asyncData({ store, route }) {
+    return fetchInitialData(store, route);
   },
   computed: {
     ...mapGetters('postsModule', ['posts'])

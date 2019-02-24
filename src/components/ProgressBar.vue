@@ -1,11 +1,12 @@
 <template>
-  <div 
+  <div
     :style="{
-      'width': percent+'%',
-      'height': height,
-      'background-color': canSuccess? color : failedColor,
-      'opacity': show ? 1 : 0}"
-    class="progress" 
+      width: percent + '%',
+      height: height,
+      'background-color': canSuccess ? color : failedColor,
+      opacity: show ? 1 : 0
+    }"
+    class="progress"
   />
 </template>
 <script>

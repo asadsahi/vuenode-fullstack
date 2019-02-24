@@ -4,7 +4,7 @@ coverage/
 dist/
 npm-debug.log
 yarn-error.log
-package.lock.json
+package-lock.json
 .idea
 *.iml
 *.sqlite

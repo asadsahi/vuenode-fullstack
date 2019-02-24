@@ -10,7 +10,10 @@ module.exports = {
   extends: ["prettier", "prettier/standard", "plugin:vue/recommended"],
   plugins: ["vue", "prettier"],
   rules: {
-    "prettier/prettier": ["error", { "singleQuote": true }]
+    "prettier/prettier": ["error", {
+      "singleQuote": true,
+      "endOfLine": "auto"
+    }]
   }
 };
 

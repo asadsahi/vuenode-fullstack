@@ -1,6 +1,6 @@
-<template lang="html" src="./AppHeader.html"></template>
+<template lang="html" src="./AppHeader.html" />
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -8,13 +8,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["isLoggedIn", "user", "appData"])
+    ...mapGetters(['isLoggedIn', 'user', 'appData'])
   },
   methods: {
     ...mapActions({
-      login: "login",
-      logout: "logout",
-      profile: "profile",
+      login: 'login',
+      logout: 'logout',
+      profile: 'profile'
     }),
     toggleMenu() {
       this.menuOpened = !this.menuOpened;

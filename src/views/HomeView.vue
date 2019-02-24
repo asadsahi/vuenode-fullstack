@@ -1,13 +1,13 @@
 <template>
   <div class="row">
     <div class="column">
-      <h1>{{ appData.content.app_title }}</h1> 
+      <h1>{{ appData.content.app_title }}</h1>
       {{ appData.content.app_description }}
-      <br>
+      <br />
       <div>
-        <router-link 
-          to="about" 
-          class="button button-outline float-right">More info</router-link>
+        <router-link to="about" class="button button-outline float-right">
+          More info
+        </router-link>
       </div>
     </div>
   </div>
