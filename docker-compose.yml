@@ -1,0 +1,18 @@
+version: "3.6"
+
+services:
+  vuenode-fullstack:
+    image: vuenode-fullstack
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5050:5050
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

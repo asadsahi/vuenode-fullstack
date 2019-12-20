@@ -12,14 +12,8 @@
     "**/node_modules": true
   },
   "eslint.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "vue",
-    "vue-html"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "vue", "vue-html"],
   "eslint.run": "onType",
-  "eslint.autoFixOnSave": true,
   "prettier.singleQuote": true,
   // relevant for 'prettier-eslint' instead of 'prettier'
   "vetur.format.defaultFormatter.html": "none",
@@ -32,5 +26,8 @@
   "vetur.format.defaultFormatter.ts": "prettier",
   "vetur.validation.style": true,
   // Validate vue-html in <template> using eslint-plugin-vue
-  "vetur.validation.template": true
+  "vetur.validation.template": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
