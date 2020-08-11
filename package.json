@@ -81,7 +81,7 @@
     "sanitize.css": "10.0.0",
     "sequelize": "5.9.4",
     "sequelize-cli": "5.5.0",
-    "serialize-javascript": "1.7.0",
+    "serialize-javascript": "4.0.0",
     "serve-favicon": "2.5.0",
     "socket.io": "2.2.0",
     "socket.io-client": "2.2.0",
